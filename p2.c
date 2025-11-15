@@ -166,7 +166,7 @@ NodeCategoria *ler_arquivo_e_popular(const char *filename) {
 
     // Lê cada alimento do arquivo
     while (fread(&alimento, sizeof(Alimento), 1, file) == 1) {
-        TipoCategoria tipo_cat = string_para_enum(alimento.categoria);
+        TipoCategoria tipo_cat = string_to_enum(alimento.categoria);
         NodeCategoria *categoria =
             buscar_ou_criar_categoria(&lista_categorias, tipo_cat);
 
@@ -261,7 +261,7 @@ void lerString(char *destino, int tamanho) {
 void listarCategorias(NodeCategoria *head){
     NodeCategoria *cat = head;
 
-    printf("Listagem de categorias:\n\n");
+    printf("=============Listagem de categorias=============\n");
     while (cat != NULL) {
         printf("%s\n", enum_to_string(cat->tipo));
         cat = cat->next;
@@ -335,33 +335,36 @@ int main() {
 
 
         switch (opcao) {
-        case 1:
+        case 1: {
             listarCategorias(categorias);
+        }
             break;
 
-        case 2:
+        case 2: {
             TipoCategoria tipo = perguntarCategoriaValida();
             if (tipo != CATEGORIA_INVALIDA) {
 
             }
-            break;
-
-        case 3:
-            TipoCategoria tipo = perguntarCategoriaValida();
-            if (tipo != CATEGORIA_INVALIDA) {
-                listarEnergiaDecrescente(categorias, tipo);
             }
             break;
 
-        case 4:
+        case 3: {
             TipoCategoria tipo = perguntarCategoriaValida();
             if (tipo != CATEGORIA_INVALIDA) {
-                listarProteinaDecrecente(categorias, tipo); 
+                //listarEnergiaDecrescente(categorias, tipo);
             }
-            
+            }
+            break;
+
+        case 4: {
+            TipoCategoria tipo = perguntarCategoriaValida();
+            if (tipo != CATEGORIA_INVALIDA) {
+                //listarProteinaDecrecente(categorias, tipo); 
+            }
+            }
             break; 
         
-        case 5:
+        case 5: {
             char nome[50];
             float min, max;
 
@@ -376,10 +379,11 @@ int main() {
             scanf("%f", &max);
             limparEntrada();
 
-            listarEnergiaIntervalo(categorias, nome, min, max);
+            //listarEnergiaIntervalo(categorias, nome, min, max);
+            }
             break;
 
-        case 6:
+        case 6: {
             char nome[50];
             float min, max;
 
@@ -394,19 +398,21 @@ int main() {
             scanf("%f", &max);
             limparEntrada();
 
-            listarProteinaIntervalo(categorias, nome, min, max);
+            //listarProteinaIntervalo(categorias, nome, min, max);
+            }
             break;
 
-        case 7:
+        case 7: {
             char nome[50];
             printf("Categoria a remover: ");
             lerString(nome, 50);
 
-            removerCategoria(&categorias, nome);
+            //removerCategoria(&categorias, nome);
             houveAlteracoes = 1;
+            }
             break;
 
-        case 8:
+        case 8: {
             char nome[50];
             int numero;
 
@@ -417,8 +423,9 @@ int main() {
             scanf("%d", &numero);
             limparEntrada();
 
-            removerAlimento(categorias, nome, numero);
+            //removerAlimento(categorias, nome, numero);
             houveAlteracoes = 1;
+            }
             break;
 
         case 9:
@@ -431,7 +438,7 @@ int main() {
 
     // é a parte que eu comentei la em cima, se o usuario escolheu alguma opção de alterar a lista, ele vai cair nesse if 
     if (houveAlteracoes == 1){
-        salvarDadosAtualizados(categorias, "dados.bin");
+        //salvarDadosAtualizados(categorias, "dados.bin");
     }
 
     //libera tudo, meio auto explicativo né 

@@ -25,7 +25,7 @@ typedef enum {
 typedef struct {
     int numero;
     char descricao[100];
-    TipoCategoria categoria;
+    char categoria[50];
     float energia;
     float proteina;
 } Alimento;
@@ -43,7 +43,7 @@ typedef struct NodeArvore {
 } NodeArvore;
 
 typedef struct NodeCategoria {
-    char tipo;
+    TipoCategoria tipo;
     NodeAlimento *alimentos;
     NodeArvore *raiz_energia;
     NodeArvore *raiz_proteina;
