@@ -201,10 +201,142 @@ void liberar_tudo(NodeCategoria *head) {
     }
 }
 
+// alterações Pedro:
+
+// limpa as entradas para n fuder tudo 
+void limparEntrada() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+// le as entradas por texto dou usuario, por q usuario é burro e c mais ainda
+// a função não deixa lixo no buffer
+void lerString(char *destino, int tamanho) {
+    fgets(destino, tamanho, stdin);
+    destino[strcspn(destino, "\n")] = 0;
+}
+
+// Menuzinho 
 int main() {
-    NodeCategoria *categorias = ler_arquivo_e_popular("dados.bin");
-    imprimir_tudo(categorias);
+    int opcao = 0; // confere a opção que o usuario escolheu 
+    int houveAlteracoes = 0; // verifica se o usuario escolheu alguma opção que faz alterações, se sim ele muda para 1, e entra no if ao final do codigo
+
+    NodeCategoria *categorias = ler_arquivo_e_popular("dados.bin"); // já estava ai, estão deixei kkkkk, mas ele é responsavel por retornar toda a lista completa já montada 
+
+    while (opcao != 9) {
+
+        printf("\n====== MENU ======\n");
+        printf("1 - Listar todas as categorias\n");
+        printf("2 - Listar alimentos de uma categoria\n");
+        printf("3 - Listar alimentos por energia (decrescente)\n");
+        printf("4 - Listar alimentos por proteína (decrescente)\n");
+        printf("5 - Alimentos com energia entre valores\n");
+        printf("6 - Alimentos com proteína entre valores\n");
+        printf("7 - Remover categoria\n");
+        printf("8 - Remover alimento\n");
+        printf("9 - Sair\n");
+        printf("Escolha: ");
+
+        scanf("%d", &opcao);
+        limparEntrada();
+
+        // if é vida né 
+
+        switch (opcao)
+        {
+        case 1:
+            listarCategorias(categorias);
+
+        case 2:
+            char nome[50];
+            printf("Nome da categoria: ");
+            lerString(nome, 50);
+            listarAlimentosDaCategoria(categorias, nome);
+
+        case 3:
+            char nome[50];
+            printf("Categoria: ");
+            lerString(nome, 50);
+            listarEnergiaDecrescente(categorias, nome);
+
+        case 4:
+            char nome[50];
+            printf("Categoria: ");
+            lerString(nome, 50);
+            ListarProteinaDecrecente(categorias, nome);  
+        
+        case 5:
+            char nome[50];
+            float min, max;
+
+            printf("Categoria: ");
+            lerString(nome, 50);
+
+            printf("Energia mínima: ");
+            scanf("%f", &min);
+            limparEntrada();
+
+            printf("Energia máxima: ");
+            scanf("%f", &max);
+            limparEntrada();
+
+            listarEnergiaIntervalo(categorias, nome, min, max);
+
+        case 6:
+            char nome[50];
+            float min, max;
+
+            printf("Categoria: ");
+            lerString(nome, 50);
+
+            printf("Proteína mínima: ");
+            scanf("%f", &min);
+            limparEntrada();
+
+            printf("Proteína máxima: ");
+            scanf("%f", &max);
+            limparEntrada();
+
+            listarProteinaIntervalo(categorias, nome, min, max);
+
+        case 7:
+            char nome[50];
+            printf("Categoria a remover: ");
+            lerString(nome, 50);
+
+            removerCategoria(&categorias, nome);
+            houveAlteracoes = 1;
+
+        case 8:
+            char nome[50];
+            int numero;
+
+            printf("Categoria do alimento: ");
+            lerString(nome, 50);
+
+            printf("Número do alimento: ");
+            scanf("%d", &numero);
+            limparEntrada();
+
+            removerAlimento(categorias, nome, numero);
+            houveAlteracoes = 1;
+
+        case 9:
+
+
+        default:
+            break;
+        }
+    }
+
+    // é a parte que eu comentei la em cima, se o usuario escolheu alguma opção de alterar a lista, ele vai cair nesse if 
+    if (houveAlteracoes == 1){
+        salvarDadosAtualizados(categorias, "dados.bin");
+    }
+
+    //libera tudo, meio auto explicativo né 
     liberar_tudo(categorias);
 
-    return 0;
+    return 0; 
+
 }
