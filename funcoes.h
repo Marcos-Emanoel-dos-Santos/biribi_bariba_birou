@@ -31,6 +31,12 @@ NodeArvore* reconstruirArvoreEnergia(NodeAlimento *lista);
 NodeArvore* reconstruirArvoreProteina(NodeAlimento *lista);
 NodeAlimento* removerDaLista(NodeAlimento *head, int numero, NodeAlimento **removido);
 void removerAlimento(NodeCategoria *head, TipoCategoria tipo, int numero, bool *houveAlteracoes);
+void listarPorEnergia(NodeArvore *raiz, float min, float max);
+void listarEnergiaIntervalo(NodeCategoria *categorias, TipoCategoria nome, float min, float max);
+void listarPorProteina(NodeArvore *raiz, float min, float max);
+void listarProteinaIntervalo(NodeCategoria *categorias, TipoCategoria tipo, float min, float max);
+
+
 void menu();
 
 #endif

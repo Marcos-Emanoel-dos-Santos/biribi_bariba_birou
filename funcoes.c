@@ -440,7 +440,89 @@ NodeAlimento* removerDaLista(NodeAlimento *head, int numero, NodeAlimento **remo
     *removido = atual;
     return head;
 }
-//essas funcões auxiliares seram chamadas na ordem correta na funcão 5
+
+void listarPorEnergia(NodeArvore *raiz, float min, float max) {
+    if (raiz == NULL) return;
+
+    if (min < raiz->valor) {
+        listarPorEnergia(raiz->esquerda, min, max);
+    }
+
+    if (raiz->valor >= min && raiz->valor <= max) {
+
+        NodeAlimento *alimento_encontrado = raiz->alimento;
+
+        printf("Numero: %d\n", alimento_encontrado->dados.numero);
+        printf("Descricao: %s\n", alimento_encontrado->dados.descricao);
+        printf("Energia: %.2f\n", alimento_encontrado->dados.energia);
+        printf("Proteina: %.2f\n", alimento_encontrado->dados.proteina);
+        printf("-----------------------------\n");
+    }
+
+    if (max > raiz->valor) {
+        listarPorEnergia(raiz->direita, min, max);
+    }
+}
+
+
+void listarEnergiaIntervalo(NodeCategoria *categorias, TipoCategoria nome, float min, float max) {
+    NodeCategoria *aux = categorias;
+
+    // Busca a categoria correta
+    while (aux != NULL && aux->tipo != nome) {
+        aux = aux->next;
+    }
+
+    if (aux == NULL) {
+        printf("Categoria nao encontrada.\n");
+        return;
+    }
+
+    printf("\nAlimentos da categoria com energia entre %.2f e %.2f:\n\n", min, max);
+
+    // Chama a função passando a raiz da árvore daquela categoria.
+    listarPorEnergia(aux->raiz_energia, min, max);
+}
+
+// Funcao 6: mesma coisa que a 5, mas com proteina
+
+void listarPorProteina(NodeArvore *raiz, float min, float max) {
+    if (raiz == NULL) return;
+
+    if (min <= raiz->valor)
+        listarPorProteina(raiz->esquerda, min, max);
+
+    if (raiz->valor >= min && raiz->valor <= max) {
+        NodeAlimento *aux = raiz->alimento;
+        printf("Numero: %d\n", aux->dados.numero);
+        printf("Descricao: %s\n", aux->dados.descricao);
+        printf("Energia: %.2f\n", aux->dados.energia);
+        printf("Proteina: %.2f\n", aux->dados.proteina);
+        printf("-----------------------------\n");
+        aux = aux->next;
+    }
+
+    if (max >= raiz->valor)
+        listarPorProteina(raiz->direita, min, max);
+}
+
+void listarProteinaIntervalo(NodeCategoria *categorias, TipoCategoria tipo, float min, float max) {
+    NodeCategoria *aux = categorias;
+
+    while (aux != NULL && aux->tipo != tipo) {
+        aux = aux->next;
+    }
+
+    if (aux == NULL) {
+        printf("Categoria nao encontrada.\n");
+        return;
+    }
+
+    printf("\nAlimentos da categoria com proteina entre %.2f e %.2f:\n\n", min, max);
+
+    listarPorProteina(aux->raiz_proteina, min, max);
+}
+
 
 //funcão 5: oque sera chamado pela main() e elimina o alimento escolido pelo usuario 
 void removerAlimento(NodeCategoria *head, TipoCategoria tipo, int numero, bool *houveAlteracoes) {
@@ -555,11 +637,7 @@ void menu(){
             scanf("%f", &max);
             limparEntrada();
 
-            // AVISO PARA BRUNA:
-            // A IDEIA DO 5 E DO 6 É A MESMA, ENTÃO VOCÊ PODE FAZER UMA FUNÇÃO SÓ
-            // QUE FAÇA OS DOIS
-
-            //listarEnergiaIntervalo(categorias, nome, min, max);
+            listarEnergiaIntervalo(categorias, tipo, min, max);
             }
             break;
 
@@ -577,11 +655,7 @@ void menu(){
             scanf("%f", &max);
             limparEntrada();
 
-            // AVISO PARA BRUNA:
-            // A IDEIA DO 5 E DO 6 É A MESMA, ENTÃO VOCÊ PODE FAZER UMA FUNÇÃO SÓ
-            // QUE FAÇA OS DOIS
-
-            //listarProteinaIntervalo(categorias, nome, min, max);
+            listarProteinaIntervalo(categorias, tipo, min, max);
             }
             break;
 
