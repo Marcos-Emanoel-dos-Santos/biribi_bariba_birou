@@ -4,35 +4,20 @@
 #include <string.h>
 #include <stdbool.h>
 
-#ifdef _WIN32
-    #include <windows.h>
-#else
-    #include <locale.h>
-#endif
 
-void configurar_console(void) {
-    #ifdef _WIN32
-        // Configura UTF-8 para o console Windows
-        printf("windows\n");
-        SetConsoleOutputCP(CP_UTF8);
-    #else
-        // Para sistemas Unix/Linux
-        setlocale(LC_ALL, "pt_BR.UTF-8");
-    #endif
-}
 
 TipoCategoria string_to_enum(const char *nomeString){
     if (strcmp(nomeString, "Cereais e derivados") == 0) return CEREAIS_E_DERIVADOS;
-    if (strcmp(nomeString, "Verduras, hortaliças e derivados") == 0) return VERDURAS_HORTALICAS_E_DERIVADOS;
+    if (strcmp(nomeString, "Verduras, hortalicas e derivados") == 0) return VERDURAS_HORTALICAS_E_DERIVADOS;
     if (strcmp(nomeString, "Frutas e derivados") == 0) return FRUTAS_E_DERIVADOS;
-    if (strcmp(nomeString, "Gorduras e óleos") == 0) return GORDURAS_E_OLEOS;
+    if (strcmp(nomeString, "Gorduras e oleos") == 0) return GORDURAS_E_OLEOS;
     if (strcmp(nomeString, "Pescados e frutos do mar") == 0) return PESCADOS_E_FRUTOS_DO_MAR;
     if (strcmp(nomeString, "Carnes e derivados") == 0) return CARNES_E_DERIVADOS;
     if (strcmp(nomeString, "Leite e derivados") == 0) return LEITE_E_DERIVADOS;
-    if (strcmp(nomeString, "Bebidas (alcóolicas e não alcoólicas)") == 0) return BEBIDAS;
+    if (strcmp(nomeString, "Bebidas (alcoolicas e nao alcoolicas)") == 0) return BEBIDAS;
     if (strcmp(nomeString, "Ovos e derivados") == 0) return OVOS_E_DERIVADOS;
-    if (strcmp(nomeString, "Produtos açucarados") == 0) return PRODUTOS_ACUCARADOS;
-    if (strcmp(nomeString, "Miscelâneas") == 0) return MISCELANEAS;
+    if (strcmp(nomeString, "Produtos acucarados") == 0) return PRODUTOS_ACUCARADOS;
+    if (strcmp(nomeString, "Miscelaneas") == 0) return MISCELANEAS;
     if (strcmp(nomeString, "Outros alimentos industrializados") == 0) return OUTROS_ALIMENTOS_INDUSTRIALIZADOS;
     if (strcmp(nomeString, "Alimentos preparados") == 0) return ALIMENTOS_PREPARADOS;
     if (strcmp(nomeString, "Leguminosas e derivados") == 0) return LEGUMINOSAS_E_DERIVADOS;
@@ -43,16 +28,16 @@ TipoCategoria string_to_enum(const char *nomeString){
 const char* enum_to_string(TipoCategoria tipo) {
     switch (tipo) {
         case CEREAIS_E_DERIVADOS: return "Cereais e derivados";
-        case VERDURAS_HORTALICAS_E_DERIVADOS: return "Verduras, hortaliças e derivados";
+        case VERDURAS_HORTALICAS_E_DERIVADOS: return "Verduras, hortalicas e derivados";
         case FRUTAS_E_DERIVADOS: return "Frutas e derivados";
-        case GORDURAS_E_OLEOS: return "Gorduras e óleos";
+        case GORDURAS_E_OLEOS: return "Gorduras e oleos";
         case PESCADOS_E_FRUTOS_DO_MAR: return "Pescados e frutos do mar";
         case CARNES_E_DERIVADOS: return "Carnes e derivados";
         case LEITE_E_DERIVADOS: return "Leite e derivados";
-        case BEBIDAS: return "Bebidas (alcóolicas e não alcoólicas)";
+        case BEBIDAS: return "Bebidas (alcoolicas e não alcoolicas)";
         case OVOS_E_DERIVADOS: return "Ovos e derivados";
-        case PRODUTOS_ACUCARADOS: return "Produtos açucarados";
-        case MISCELANEAS: return "Miscelâneas";
+        case PRODUTOS_ACUCARADOS: return "Produtos acucarados";
+        case MISCELANEAS: return "Miscelaneas";
         case OUTROS_ALIMENTOS_INDUSTRIALIZADOS: return "Outros alimentos industrializados";
         case ALIMENTOS_PREPARADOS: return "Alimentos preparados";
         case LEGUMINOSAS_E_DERIVADOS: return "Leguminosas e derivados";
@@ -315,17 +300,13 @@ void listarAlimentosDaCategoria(NodeCategoria *head, TipoCategoria tipo) {
 
 TipoCategoria perguntarCategoriaValida() {
     TipoCategoria tipo = CATEGORIA_INVALIDA;
-    char nome[50];
-    
-    while (tipo == CATEGORIA_INVALIDA) {
-        printf("Digite o nome da categoria: ");
+    do {
+        char nome[50];
+        printf("Digite um nome válido de categoria: ");
         lerString(nome, 50);
+
         tipo = string_to_enum(nome);
-        
-        if (tipo == CATEGORIA_INVALIDA) {
-            printf("Erro: Categoria '%s' nao existe. Tente novamente.\n", nome);
-        }
-    }
+    } while (tipo == CATEGORIA_INVALIDA);
     
     return tipo;
 }
@@ -505,7 +486,6 @@ void removerAlimento(NodeCategoria *head, TipoCategoria tipo, int numero, bool *
 }
 
 int main() {
-    configurar_console();
     int opcao = 0;
     bool houveAlteracoes = false; // verifica se o usuario escolheu alguma opção que faz alterações, se sim ele muda para 1, e entra no if ao final do codigo
 
