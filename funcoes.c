@@ -561,6 +561,29 @@ void removerAlimento(NodeCategoria *head, TipoCategoria tipo, int numero, bool *
     printf("\nAlimento removido com sucesso!\n");
 }
 
+void salvarDadosAtualizados(NodeCategoria *head, const char *filename) {
+    FILE *file = fopen(filename, "wb");
+    if (file == NULL) {
+        perror("Erro ao abrir arquivo para salvar");
+        return;
+    }
+
+    NodeCategoria *cat_atual = head;
+    
+    while (cat_atual != NULL) {
+        NodeAlimento *alim_atual = cat_atual->alimentos;
+        
+        while (alim_atual != NULL) {
+            fwrite(&(alim_atual->dados), sizeof(Alimento), 1, file);
+            alim_atual = alim_atual->next;
+        }
+        cat_atual = cat_atual->next;
+    }
+
+    fclose(file);
+    printf("\nDados atualizados salvos com sucesso em %s\n", filename);
+}
+
 void menu(){
     int opcao = 0;
     bool houveAlteracoes = false; // verifica se o usuario escolheu alguma opcão que faz alteracões, se sim ele muda para 1, e entra no if ao final do codigo
@@ -689,7 +712,7 @@ void menu(){
     }
 
     if (houveAlteracoes == true){
-        //salvarDadosAtualizados(categorias, "dados.bin");
+        salvarDadosAtualizados(categorias, "dados.bin");
     }
 
     liberar_tudo(categorias);
